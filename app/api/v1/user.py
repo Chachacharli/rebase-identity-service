@@ -4,7 +4,6 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi_pagination import Page, paginate
 from sqlmodel import Session
 
-from app.core.auth.dependencies import require_role
 from app.core.db import get_session
 from app.schemas.user import (
     UserCreate,
