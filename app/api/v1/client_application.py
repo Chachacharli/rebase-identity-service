@@ -1,6 +1,5 @@
-from typing import List
-
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi_pagination import Page, paginate
 
 # from pydantic import BaseModel
 # from sqlalchemy.ext.asyncio import AsyncSession
@@ -18,11 +17,14 @@ from app.services.client_application_service import ClientService
 router = APIRouter(prefix="/v1/client_application")
 
 
-@router.get("/", response_model=List[ClientApplicationRead])
+@router.get("/", response_model=Page[ClientApplicationRead])
 def list_clients(session: Session = Depends(get_session)):
     repository = ClientApplicationRepository(session)
     service = ClientService(repository)
-    return service.list_clients()
+    clients = service.list_clients()
+    return paginate(
+        [ClientApplicationRead.model_validate(client) for client in clients]
+    )
 
 
 @router.get("/{client_id}", response_model=ClientApplicationRead)

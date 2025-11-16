@@ -3,15 +3,28 @@ from datetime import datetime
 from sqlalchemy.orm import selectinload
 from sqlmodel import Session, select
 
+from app.core.filtering.filter_builder import FilterBuilder
 from app.exceptions.http_exceptions import NotFoundException
 from app.models.role import Role
 from app.models.user import User
-from app.schemas.user import UserSetRole
+from app.schemas.user import UserFilters, UserSetRole
 
 
 class UserRepository:
     def __init__(self, session: Session):
         self.session = session
+
+    def get_users(self, filters: UserFilters) -> list[User]:
+        filter_builder = FilterBuilder(User)
+        statement = select(User)
+        filter_builder.text("username", filters.username)
+        filter_builder.text("email", filters.email)
+        filter_builder.order_by(filters.order_by, filters.order_dir)
+
+        statement = filter_builder.build(statement)
+        res = self.session.exec(statement)
+
+        return res.all()
 
     def get_by_username(self, username: str):
         return self.session.exec(select(User).where(User.username == username)).first()

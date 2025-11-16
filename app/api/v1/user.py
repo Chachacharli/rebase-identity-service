@@ -1,12 +1,13 @@
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi_pagination import Page, paginate
 from sqlmodel import Session
 
-from app.core.auth.dependencies import require_role
 from app.core.db import get_session
 from app.schemas.user import (
     UserCreate,
+    UserFilters,
     UserRead,
     UserSetRole,
     UserUpdate,
@@ -45,14 +46,11 @@ def get_user(user_id: UUID, db: Session = Depends(get_session)) -> UserWithRoles
     return UserWithRoles.model_validate(user)
 
 
-@router.get(
-    "/",
-    response_model=list[UserRead],
-)
-def list_users(db: Session = Depends(get_session)):
+@router.get("/", response_model=Page[UserRead])
+def list_users(db: Session = Depends(get_session), filters=Depends(UserFilters)):
     user_service = UserService(db)
-    users = user_service.get_all_users()
-    return [UserRead.model_validate(user) for user in users]
+    users = user_service.get_all_users(filters)
+    return paginate([UserRead.model_validate(user) for user in users])
 
 
 @router.put("/{user_id}", response_model=UserRead)

@@ -7,6 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi_pagination import add_pagination
 
 from app.api import api_router
 from app.core.db import init_db
@@ -51,6 +52,7 @@ register_exception_handlers(app)
 templates = Jinja2Templates(directory="app/templates")
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
+add_pagination(app)
 
 app.add_middleware(
     CORSMiddleware,
