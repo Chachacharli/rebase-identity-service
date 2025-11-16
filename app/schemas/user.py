@@ -1,8 +1,10 @@
 from typing import List, Optional
 from uuid import UUID
 
+from fastapi import Query
 from pydantic import BaseModel
 
+from app.core.filtering.filters import Order
 from app.schemas.role import RoleReadWithoutPermissions
 
 
@@ -34,3 +36,10 @@ class UserSetRole(BaseModel):
 
 class UserWithRoles(UserRead):
     roles: List[RoleReadWithoutPermissions] = []
+
+
+class UserFilters(BaseModel):
+    username: Optional[str] = None
+    email: Optional[str] = None
+    order_by: Optional[str] = Query(None)
+    order_dir: Order = Query(Order.none)

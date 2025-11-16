@@ -11,6 +11,7 @@ from app.schemas.user import (
     UserSetRole,
     UserUpdate,
     UserWithRoles,
+    UserFilters,
 )
 from app.services.password_service import PasswordService
 from app.services.user_service import UserService
@@ -45,13 +46,10 @@ def get_user(user_id: UUID, db: Session = Depends(get_session)) -> UserWithRoles
     return UserWithRoles.model_validate(user)
 
 
-@router.get(
-    "/",
-    response_model=list[UserRead],
-)
-def list_users(db: Session = Depends(get_session)):
+@router.get("/", response_model=list[UserRead])
+def list_users(db: Session = Depends(get_session), filters=Depends(UserFilters)):
     user_service = UserService(db)
-    users = user_service.get_all_users()
+    users = user_service.get_all_users(filters)
     return [UserRead.model_validate(user) for user in users]
 
 

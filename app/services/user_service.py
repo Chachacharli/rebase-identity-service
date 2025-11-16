@@ -8,7 +8,7 @@ from app.exceptions.bussiness_exceptions import (
 )
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
-from app.schemas.user import UserSetRole
+from app.schemas.user import UserFilters, UserSetRole
 from app.schemas.user_info_schema import UserInfoSchema
 
 
@@ -17,10 +17,10 @@ class UserService:
         self.session = session
         self.user_repo = UserRepository(session)
 
-    def get_all_users(self) -> list[User]:
-        # TODO: Pagination
-        statement = select(User)
-        users = self.session.exec(statement).all()
+    def get_all_users(self, filters: UserFilters) -> list[User]:
+        user_repository = UserRepository(self.session)
+        users = user_repository.get_users(filters)
+
         return users
 
     def create_user(self, username: str, email: str, password: str) -> User:
