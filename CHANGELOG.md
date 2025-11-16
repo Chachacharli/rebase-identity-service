@@ -1,8 +1,8 @@
 # rebase-base-identity-service
 
-# 0.4.0 - 12/11/2025
+# 0.4.0 - 15/11/2025
 ## Summary 
-This release introduces comprehensive user management and authentication enhancements, including a new user information endpoint, complete password reset and email verification flows, and improved security measures. The implementation adds robust email templating, service-layer components for secure token handling, and UI improvements for better user experience.
+This release introduces comprehensive user management and authentication enhancements, including a new user information endpoint, complete password reset and email verification flows, and improved security measures. The implementation adds robust email templating, service-layer components for secure token handling, and UI improvements for better user.Implementanion of pagination for users and client_applications.
 
 ## Improvements
 - Added `/v1/userinfo` endpoint to fetch user information using the user ID from the access token.
@@ -17,6 +17,11 @@ This release introduces comprehensive user management and authentication enhance
 - Implemented endpoint to resend verification email: `/v1/auth/resend-verification-email`.
 - Updated user creation flow to send verification email upon registration.
 - Added account lockout mechanism after a configurable number of failed login attempts to enhance security.
+ - Added pagination and filtering support for list endpoints using `fastapi-pagination` and reusable filtering helpers.
+	 - Integrated `fastapi_pagination` into the application (`add_pagination(app)` in `app/main.py`) and applied `Page`/`paginate` to endpoints like `GET /v1/user/` and `GET /v1/client_application/`.
+	 - Introduced `UserFilters` schema, `FilterBuilder` and `Order` utilities in `app/core/filtering/` to build safe SQL queries with common operators (text search, boolean, date ranges, ordering).
+	 - Updated `UserRepository.get_users` and `UserService.get_all_users` to accept filters and return paginated lists.
+	 - Added `fastapi_pagination` usage to return consistent pagination metadata (total, page, size) and simplified client usage.
 
 ### Corrections
 - Fixed password reset and token handling logic in `user_manager` and `password_service` to correct flow issues and ensure tokens are validated and consumed correctly.
