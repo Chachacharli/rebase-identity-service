@@ -1,6 +1,7 @@
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi_pagination import Page, paginate
 from sqlmodel import Session
 
 from app.core.auth.dependencies import require_role
@@ -15,7 +16,6 @@ from app.schemas.user import (
 )
 from app.services.password_service import PasswordService
 from app.services.user_service import UserService
-from fastapi_pagination import Page, paginate
 
 router = APIRouter(prefix="/v1/user")
 
