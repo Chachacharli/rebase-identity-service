@@ -7,14 +7,15 @@ from app.core.auth.dependencies import require_role
 from app.core.db import get_session
 from app.schemas.user import (
     UserCreate,
+    UserFilters,
     UserRead,
     UserSetRole,
     UserUpdate,
     UserWithRoles,
-    UserFilters,
 )
 from app.services.password_service import PasswordService
 from app.services.user_service import UserService
+from fastapi_pagination import Page, paginate
 
 router = APIRouter(prefix="/v1/user")
 
@@ -46,11 +47,11 @@ def get_user(user_id: UUID, db: Session = Depends(get_session)) -> UserWithRoles
     return UserWithRoles.model_validate(user)
 
 
-@router.get("/", response_model=list[UserRead])
+@router.get("/", response_model=Page[UserRead])
 def list_users(db: Session = Depends(get_session), filters=Depends(UserFilters)):
     user_service = UserService(db)
     users = user_service.get_all_users(filters)
-    return [UserRead.model_validate(user) for user in users]
+    return paginate([UserRead.model_validate(user) for user in users])
 
 
 @router.put("/{user_id}", response_model=UserRead)
