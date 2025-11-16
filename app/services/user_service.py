@@ -1,5 +1,5 @@
 from passlib.hash import pbkdf2_sha256
-from sqlmodel import Session, select
+from sqlmodel import Session
 
 from app.components.user.user_manager import UserManager
 from app.exceptions.bussiness_exceptions import (
