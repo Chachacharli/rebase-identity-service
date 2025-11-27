@@ -1,8 +1,8 @@
 # rebase-base-identity-service
 
-# 0.4.0 - 15/11/2025
+# 0.4.0 - 26/11/2025
 ## Summary 
-This release introduces comprehensive user management and authentication enhancements, including a new user information endpoint, complete password reset and email verification flows, and improved security measures. The implementation adds robust email templating, service-layer components for secure token handling, and UI improvements for better user.Implementanion of pagination for users and client_applications.
+This release introduces comprehensive user management and authentication enhancements, including a new user information endpoint, complete password reset and email verification flows, and improved security measures. The implementation adds robust email templating, service-layer components for secure token handling, and UI improvements for better user.Implementanion of pagination for users and client_applications. Refactor to use Protocol and dependency injection for store token handlers.
 
 ## Improvements
 - Added `/v1/userinfo` endpoint to fetch user information using the user ID from the access token.
