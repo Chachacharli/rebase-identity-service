@@ -15,6 +15,10 @@ class Settings(BaseSettings):
     # Login settings
     MAX_LOGIN_ATTEMPTS: int = 5
 
+    # Authorization code store backend (memory | redis)
+    AUTH_CODE_STORE: str = "memory"
+    REDIS_URL: str = "redis://localhost:6379/0"
+
     # JWT
     JWT_ALG: str = "RS256"
     PRIVATE_KEY_PATH: str = "keys/private.pem"

@@ -135,3 +135,26 @@ Each tenant can manage its own users, roles, and permissions independently, ensu
 
 ---
 
+## Store Configuration
+
+The application uses a pluggable authorization-code store for OAuth2 PKCE flows. By default the service uses an in-memory store which preserves original behaviour. You can switch to a Redis-backed store by configuring environment variables or using the application `Settings`.
+
+Environment variables / settings:
+
+- `AUTH_CODE_STORE`: `memory` (default) or `redis`.
+- `REDIS_URL`: Redis connection URL (default: `redis://localhost:6379/0`).
+
+How to enable Redis store (example):
+
+```powershell
+$env:AUTH_CODE_STORE = "redis"
+$env:REDIS_URL = "redis://localhost:6379/0"
+typer cli.py run
+```
+
+Notes:
+
+- If `AUTH_CODE_STORE=redis` is set but the Redis client cannot be initialized (missing dependency or connection issues), the app falls back to the in-memory store and prints a warning to stderr to preserve backward compatibility.
+- The store selection is now part of `app.core.config.Settings` (`AUTH_CODE_STORE` and `REDIS_URL`) so you can centralize this configuration in your environment or in a `.env` file.
+
+

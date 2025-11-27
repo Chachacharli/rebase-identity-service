@@ -59,7 +59,7 @@ class TokenService:
             user_id=user_id,
             client_id=client_id,
             scope=scope,
-            expires_at=now + timedelta(seconds=ttl_refresh),
+            expires_at=now + timedelta(minutes=ttl_refresh),
             revoked=False,
         )
 
@@ -71,7 +71,7 @@ class TokenService:
             user_id=user_id,
             client_id=client_id,
             scope=scope,
-            expires_at=now + timedelta(seconds=ttl_access),
+            expires_at=now + timedelta(minutes=ttl_access),
             revoked=False,
             refresh_token_id=new_rt.id,
         )

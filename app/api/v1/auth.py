@@ -98,7 +98,7 @@ def authorize_post(
         code=auth_code,
         user_id=user.id,
         scope=scope.split(" "),
-        expires_at=datetime.utcnow() + timedelta(seconds=ttl_expiration_code),
+        expires_at=datetime.utcnow() + timedelta(minutes=ttl_expiration_code),
     )
 
     # Redirigir con code + state
