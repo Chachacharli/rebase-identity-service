@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlmodel import Session, select
 
@@ -44,7 +44,7 @@ class AccessTokenRepository:
             return InstrospectResponse(active=False)
         if at.revoked:
             return InstrospectResponse(active=False, client_id=at.client_id)
-        if at.expires_at < datetime.utcnow():
+        if at.expires_at < datetime.now(timezone.utc):
             self.revoke(at)
             return InstrospectResponse(active=False, client_id=at.client_id)
         return InstrospectResponse(

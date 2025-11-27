@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy.orm import selectinload
 from sqlmodel import Session, select
@@ -126,7 +126,7 @@ class UserRepository:
             raise NotFoundException(entity="User")
 
         user.login_attempts = 0
-        user.last_login = datetime.utcnow()
+        user.last_login = datetime.now(timezone.utc)
         self.session.add(user)
         self.session.commit()
         self.session.refresh(user)

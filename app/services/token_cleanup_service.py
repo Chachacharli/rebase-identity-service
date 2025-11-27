@@ -1,5 +1,5 @@
 import asyncio
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlmodel import Session, delete
 
@@ -24,7 +24,7 @@ class TokenCleanupService:
     def cleanup_expired_tokens(self):
         print("[TokenCleanupService] Limpiando tokens expirados...")
         with Session(engine) as session:
-            now = datetime.utcnow()
+            now = datetime.now(timezone.utc)
             session.exec(delete(AccessToken).where(AccessToken.expires_at < now))
             session.exec(delete(RefreshToken).where(RefreshToken.expires_at < now))
             session.commit()
