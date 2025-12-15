@@ -106,7 +106,29 @@ class UserAccountLockedException(AppException):
     ):
         super().__init__(
             message=message,
-            code=ExceptionCode.ACCOUNT_LOCKED if hasattr(ExceptionCode, 'ACCOUNT_LOCKED') else ExceptionCode.UNAUTHORIZED,
+            code=ExceptionCode.ACCOUNT_LOCKED
+            if hasattr(ExceptionCode, "ACCOUNT_LOCKED")
+            else ExceptionCode.UNAUTHORIZED,
+            http_status=status.HTTP_403_FORBIDDEN,
+            details=details,
+        )
+
+
+class UnauthorizedClientException(AppException):
+    def __init__(self, message="Unauthorized client", details=None):
+        super().__init__(
+            message=message,
+            code=ExceptionCode.UNAUTHORIZED_CLIENT,
+            http_status=status.HTTP_400_BAD_REQUEST,
+            details=details,
+        )
+
+
+class ScopesNotAllowedException(AppException):
+    def __init__(self, message="Requested scopes are not allowed", details=None):
+        super().__init__(
+            message=message,
+            code=ExceptionCode.FORBIDDEN,
             http_status=status.HTTP_403_FORBIDDEN,
             details=details,
         )

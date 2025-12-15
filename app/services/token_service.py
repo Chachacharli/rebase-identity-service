@@ -181,3 +181,28 @@ class TokenService:
 
         # token desconocido -> ok (es idempotente según RFC)
         return
+
+    def issue_client_token(self, client_id, scope) -> TokenPair:
+        now = self._now()
+
+        access_token = secrets.token_urlsafe(32)
+
+        ttl_access = int(self.app_settings_repo.get("ttl_access_token", 1800))
+
+        at = AccessToken(
+            token=access_token,
+            user_id=None,
+            client_id=client_id,
+            scope=scope,
+            expires_at=now + timedelta(minutes=ttl_access),
+            revoked=False,
+            refresh_token_id=None,
+        )
+
+        self.at_repo.create(at)
+
+        return TokenPair(
+            access_token=access_token,
+            refresh_token=None,
+            expires_in=ttl_access,
+        )

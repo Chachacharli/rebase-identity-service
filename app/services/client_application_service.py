@@ -17,3 +17,9 @@ class ClientService:
 
     def list_clients(self) -> list[ClientApplication]:
         return self.repository.list_all()
+
+    def validate_client_secret(self, client_id: str, client_secret: str) -> bool:
+        client = self.get_client(client_id)
+        if not client:
+            return False
+        return client.client_secret == client_secret

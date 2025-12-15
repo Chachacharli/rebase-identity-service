@@ -25,6 +25,21 @@ class GrantTokenResponse:
         }
 
 
+@dataclass(frozen=True)
+class ClientCredentialsGrantRequest:
+    client_id: str
+    client_secret: str
+    client_secret: str
+    scope: str | None = None
+
+    def to_dict(self) -> dict:
+        return {
+            "client_id": self.client_id,
+            "client_secret": self.client_secret,
+            "scope": self.scope,
+        }
+
+
 @dataclass()
 class FormTokenRequest:
     grant_type: str
