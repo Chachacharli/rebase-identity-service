@@ -2,7 +2,8 @@
 
 # 0.4.0 - 26/11/2025
 ## Summary 
-This release introduces comprehensive user management and authentication enhancements, including a new user information endpoint, complete password reset and email verification flows, and improved security measures. The implementation adds robust email templating, service-layer components for secure token handling, and UI improvements for better user.Implementanion of pagination for users and client_applications. Refactor to use Protocol and dependency injection for store token handlers.
+This release introduces comprehensive user management and authentication enhancements, including a new user information endpoint, complete password reset and email verification flows, and improved security measures. The implementation adds robust email templating, service-layer components for secure token handling, and UI improvements for better user.Implementanion of pagination for users and client_applications. Refactor to use Protocol and dependency injection for store token handlers. Implementation of Grant Type  `client_credentials` for machine to machine authentication.
+
 
 ## Improvements
 - Added `/v1/userinfo` endpoint to fetch user information using the user ID from the access token.
@@ -22,12 +23,14 @@ This release introduces comprehensive user management and authentication enhance
 	 - Introduced `UserFilters` schema, `FilterBuilder` and `Order` utilities in `app/core/filtering/` to build safe SQL queries with common operators (text search, boolean, date ranges, ordering).
 	 - Updated `UserRepository.get_users` and `UserService.get_all_users` to accept filters and return paginated lists.
 	 - Added `fastapi_pagination` usage to return consistent pagination metadata (total, page, size) and simplified client usage.
+- Implement gt `client_credentials` grant type for machine-to-machine authentication.
 
 ### Corrections
 - Fixed password reset and token handling logic in `user_manager` and `password_service` to correct flow issues and ensure tokens are validated and consumed correctly.
 - Fixed issues in the revoke endpoint and related routing/handlers.
 - Minor fixes for template rendering and endpoint wiring related to email flows and static assets.
 - Users must now have their email verified in order to log in. 
+- Now `access_token` and `refresh_token` is not necesary save `client_id` in database, this field is now removed from the models.
 
 ### Decrements
 
