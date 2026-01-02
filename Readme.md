@@ -419,3 +419,20 @@ async def reset_password(
 | **MailManager** | Template rendering, context building, delegation | Configure providers, add templates |
 | **MailService** | Application-level abstraction, default provider | Swap provider via config |
 | **Rules** | Email types, URL builders, constants | Add new types or URL patterns |
+
+## Enviroment variables
+### Database configuration
+DATA_BASE_USER
+DATA_BASE_PASSWORD
+DATA_BASE_HOST
+DATA_BASE_PORT
+DATA_BASE_NAME
+
+### SECRETS 
+ENCRYPTION_KEY
+
+### STMP Settings
+SMTP_SERVER=
+SMTP_PORT=
+SMTP_USERNAME
+SMTP_PASSWORD
